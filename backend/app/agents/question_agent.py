@@ -6,19 +6,26 @@ class QuestionAgent(BaseAgent):
     def run(self, input_data):
         role = input_data.get("role", "software engineer")
         level = input_data.get("level", "beginner")
+        context = input_data.get("context", "")
 
         prompt = f"""
-        You are an expert technical interviewer.
+        You are a technical interviewer.
 
-        Generate ONE interview question for a {level} {role}.
+        Previous conversation:
+        {context}
 
-        Rules:
-        - Be clear and concise
-        - Do NOT give answer
+        Generate ONLY ONE interview question.
+
+        STRICT RULES:
+        - Output ONLY the question
+        - No explanations
+        - No hints
+        - No extra text
+        - Keep it under 2 lines
+        - Make it relevant to a {level} {role}
+
+        Question:
         """
-
         question = call_llm(prompt)
 
-        return {
-            "question": question
-        }
+        return {"question": question}
